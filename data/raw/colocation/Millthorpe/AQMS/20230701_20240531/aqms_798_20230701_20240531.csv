@@ -1,0 +1,21 @@
+Site_Id,Date,Hour,HourDescription,Value,AirQualityCategory,DeterminingPollutant,Parameter.ParameterCode,Parameter.ParameterDescription,Parameter.Units,Parameter.UnitsDescription,Parameter.Category,Parameter.SubCategory,Parameter.Frequency
+798,2023-07-31,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-07-31,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-08-31,1,12 am - 1 am,14.608467,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-08-31,1,12 am - 1 am,7.378034,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-09-30,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-09-30,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-10-31,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-10-31,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-11-30,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-11-30,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-12-31,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2023-12-31,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-01-31,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-01-31,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-02-29,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-02-29,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-03-31,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-03-31,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-04-30,1,12 am - 1 am,,,,PM10,PM10,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
+798,2024-04-30,1,12 am - 1 am,,,,PM2.5,PM2.5,µg/m³,microgram per cubic meter,Averages,Monthly,Hourly average
