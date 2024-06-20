@@ -16,14 +16,20 @@ Modified Wed Feb 15 17:00:00 2023
 import requests
 import pandas as pd
 import numpy as np
-from datetime import datetime, timezone
+import calendar
+from datetime import datetime, timezone, timedelta
 import time
 import json
 import os
+import sys
 from os.path import join, getsize
 from pathlib import Path
 import glob
 from io import StringIO
+
+sys.path.insert(0, os.path.join(os.getcwd(), "src"))
+
+from config.pas_config import PAS_API_TIME_LIMITS
 
 # from src.config.config import *
 
@@ -103,10 +109,10 @@ average_time = (
 
 
 def convert_to_unix(date_str):
-    return int(time.mktime(datetime.strptime(date_str, "%Y%m%d").timetuple()))
+    return int(time.mktime(datetime.strptime(date_str, "%Y-%m-%d").timetuple()))
 
 
-def get_historicaldata(sensor_index, bdate, edate, average_time, field_list):
+def get_sensor_hist_data(sensor_index, bdate, edate, average_time, field_list):
     key_read = "D80F3AFD-DDAD-11ED-BD21-42010A800008"
     # Historical API URL
     root_api_url = "https://api.purpleair.com/v1/sensors/" + sensor_index
@@ -159,7 +165,7 @@ def get_historicaldata(sensor_index, bdate, edate, average_time, field_list):
     # sensorname = sensorname.strip('"')
 
     # Wait time
-    time.sleep(3)
+    time.sleep(5)
 
     print(
         "Downloading for PA: %s for Dates: %s to %s."
@@ -217,178 +223,169 @@ def get_historicaldata(sensor_index, bdate, edate, average_time, field_list):
         return pd.DataFrame()
 
 
-# def get_historicaldata(sensor_index, bdate, edate, average_time, field_list):
-#     key_read = "D80F3AFD-DDAD-11ED-BD21-42010A800008"
-#     # Historical API URL
-#     root_api_url = "https://api.purpleair.com/v1/sensors/" + sensor_index + "/members/"
+def get_member_hist_data(group_id, member_id, bdate, edate, average_time, field_list):
+    key_read = "D80F3AFD-DDAD-11ED-BD21-42010A800008"
+    # Historical API URL
+    root_api_url = "https://api.purpleair.com/v1/groups/" + group_id + "/members/"
 
-#     # Average time: The desired average in minutes, one of the following:0 (real-time),10 (default if not specified),30,60
-#     average_api = f"&average={average_time}"
+    # Average time: The desired average in minutes, one of the following:0 (real-time),10 (default if not specified),30,60
+    average_api = f"&average={average_time}"
 
-#     # SD Data Fields
-#     print(field_list)
-#     for i, f in enumerate(field_list):
-#         if i == 0:
-#             fields_api_url_sd = f"&fields={f}"
-#         else:
-#             fields_api_url_sd += f"%2C{f}"
+    # SD Data Fields
+    print(field_list)
+    for i, f in enumerate(field_list):
+        if i == 0:
+            fields_api_url_sd = f"&fields={f}"
+        else:
+            fields_api_url_sd += f"%2C{f}"
 
-#     print(fields_api_url_sd)
+    print(fields_api_url_sd)
 
-#     # Converting to UNIX timestamp
-#     begindate = convert_to_unix(bdate)
-#     enddate = convert_to_unix(edate)
+    # Converting to UNIX timestamp
+    begindate = convert_to_unix(bdate)
+    enddate = convert_to_unix(edate)
 
-#     # Gets Sensor Data
-#     for i, s in enumerate(sensor_index):
+    all_dfs = []
 
-#         # Adding sensor_index & API Key
-#         hist_api_url = root_api_url + f"{s}/history/csv?api_key={key_read}"
-#         print(hist_api_url)
+    # Gets Sensor Data
+    # for i, s in enumerate(sensor_list):
 
-#         # Special URL to grab sensor registration name
-#         name_api_url = root_api_url + f"{s}?fields=name&api_key={key_read}"
+    # Adding member_id & API Key
+    hist_api_url = root_api_url + f"{member_id}/history/csv?api_key={key_read}"
+    print(hist_api_url)
+    # print(s)
+    # Special URL to grab sensor registration name
+    name_api_url = root_api_url + f"{member_id}?fields=name&api_key={key_read}"
+    print(name_api_url)
+    # get sensor registration name:
+    response = requests.get(name_api_url)
+    response.raise_for_status()
 
-#         # get sensor registration name:
-#         try:
-#             response = requests.get(name_api_url)
-#         except:
-#             print(name_api_url)
+    # namedf = pd.read_csv(
+    #     StringIO(response.text),
+    #     sep=",|:",
+    #     header=None,
+    #     skiprows=8,
+    #     index_col=None,
+    #     engine="python",
+    # )
 
-#         try:
-#             assert response.status_code == requests.codes.ok
+    # Response will be the registered name of the sensor
+    # sensorname = str(namedf[1][0])
+    # sensorname = sensorname.strip()
+    # sensorname = sensorname.strip('"')
 
-#             namedf = pd.read_csv(
-#                 StringIO(response.text),
-#                 sep=",|:",
-#                 header=None,
-#                 skiprows=8,
-#                 index_col=None,
-#                 engine="python",
-#             )
+    # Wait time
+    time.sleep(5)
 
-#         except AssertionError:
-#             namedf = pd.DataFrame()
-#             print("Bad URL!")
+    print(
+        "Downloading for PA: %s for Dates: %s to %s."
+        % (
+            member_id,
+            datetime.fromtimestamp(begindate),
+            datetime.fromtimestamp(enddate),
+        )
+    )
+    dates_api_url = f"&start_timestamp={begindate}&end_timestamp={enddate}"
 
-#         # Response will be the registered name of the sensor
-#         sensorname = str(namedf[1][0])
-#         sensorname = sensorname.strip()
-#         sensorname = sensorname.strip('"')
+    # Creates final URLs that download data
+    api_url_e = hist_api_url + dates_api_url + average_api + fields_api_url_sd
 
-#         # Creating start and end date api url
-#         # Wait time
-#         time.sleep(sleep_seconds)
+    # Queries URLs for data
+    response = requests.get(api_url_e)
+    response.raise_for_status()
 
-#         # if i < len_datelist:
-#         print(
-#             "Downloading for PA: %s for Dates: %s to %s."
-#             % (
-#                 s,
-#                 datetime.fromtimestamp(begindate),
-#                 datetime.fromtimestamp(enddate),
-#             )
-#         )
-#         dates_api_url = f"&start_timestamp={begindate}&end_timestamp={enddate}"
+    df = pd.read_csv(StringIO(response.text), sep=",", header=0)
 
-#         # Creates final URLs that download data in the format of previous PA downloads and SD card data
-#         api_url_e = hist_api_url + dates_api_url + average_api + fields_api_url_sd
+    if df.empty:
+        print("------------- No Data Available -------------")
+    else:
+        df["datetime_utc"] = pd.to_datetime(df["time_stamp"], unit="s", utc=True)
+        df = (
+            df.drop_duplicates()
+            .sort_values(by="time_stamp")
+            .set_index("datetime_utc")
+        )
+        # cloned_df = df.copy(deep=True)
+        # resampled_values = (
+        #     df[field_list].resample(f"{average_time}min").bfill(limit=1).fillna(0)
+        # )
+        # df = pd.concat(
+        #     [
+        #         cloned_df.drop(field_list, axis=1)
+        #         .resample(f"{average_time}min")
+        #         .bfill(),
+        #         resampled_values,
+        #     ],
+        #     axis=1,
+        # )
 
-#         # creates list of all URLs
-#         URL_List = [api_url_e]
+        columns_to_round_up = ["pm2.5_alt", "pm10.0_atm"]
+        df[columns_to_round_up] = np.round(df[columns_to_round_up], 3)
+        df.loc[df["temperature"] != 0, "temperature"] = (
+            (df.loc[df["temperature"] != 0, "temperature"] - 32) * 5 / 9
+        )
+        df["temperature"] = np.round(df["temperature"], 1)
+        df.rename(columns={"time_stamp": "timestamp"})
+        all_dfs.append(df)
 
-#         # for x in URL_List:
-#         # queries URLs for data
-#         try:
-#             response = requests.get(api_url_e)
-#         except:
-#             print(api_url_e)
-#         #
-#         try:
-#             assert response.status_code == requests.codes.ok
+    if all_dfs:
+        return pd.concat(all_dfs)
+    else:
+        return pd.DataFrame()
 
-#             # Creating a Pandas DataFrame
-#             df = pd.read_csv(StringIO(response.text), sep=",", header=0)
 
-#         except AssertionError:
-#             df = pd.DataFrame()
-#             print("Bad URL!")
+# def convert_to_unix(date_str):
+#     dt = datetime.strptime(date_str, "%Y-%m-%d")
+#     return calendar.timegm(dt.utctimetuple())
 
-#         if df.empty:
-#             print("------------- No Data Available -------------")
-#         else:
-#             # Adding Sensor Index/ID
-#             # df["id"] = s
 
-#             #
-#             date_time_utc = []
-#             for index, row in df.iterrows():
-#                 date_time_utc.append(
-#                     datetime.fromtimestamp(row["time_stamp"], tz=timezone.utc)
-#                 )
-#             df["date_time_utc"] = date_time_utc
+def fetch_pas_data(group_id, member_id, bdate, edate, freq, field_list):
+    """
+    Fetch PAS data with consideration for API time limits.
 
-#             # Dropping duplicate rows
-#             df = df.drop_duplicates(subset=None, keep="first", inplace=False)
-#             df = df.sort_values(by=["time_stamp"], ascending=True, ignore_index=True)
-#             # Convert the 'UTCDateTime' column to datetime format
-#             df["date_time_utc"] = pd.to_datetime(df["date_time_utc"])
+    Args:
+        member_id: Sensor member id in group.
+        bdate (str): Begin date in "YYYY-MM-DD" format.
+        edate (str): End date in "YYYY-MM-DD" format.
+        freq (str): Frequency of data ('hourly' or 'daily').
+        field_list (list): List of fields to fetch.
 
-#             # Set 'UTCDateTime' as the index
-#             df.set_index("date_time_utc", inplace=True)
-#             # print(df)
-#             cloned_df = df.copy(deep=True)
-#             resampled_values = df[field_list].resample(f"{average_time}min").bfill(limit=1).fillna(0)
-#             print("Resampled Values", resampled_values)
-#             # print(combined_data.drop(field_list,axis=1))
-#             df = pd.concat(
-#                 [
-#                     cloned_df.drop(field_list, axis=1).resample("2min").bfill(),
-#                     resampled_values,
-#                 ],
-#                 axis=1,
-#             )
-#             # Convert the 'time_stamp' column to Unix timestamp
-#             df["time_stamp"] = df.index.astype("int64") // 10**9
-#             # print("Final Data", df)
+    Returns:
+        pd.DataFrame: Concatenated DataFrame with data from all chunks.
+    """
+    time_limits = PAS_API_TIME_LIMITS[freq]
+    max_days = time_limits["limit_days"]
+    average_time = time_limits["freq"]
 
-#             # Columns to round up
-#             columns_to_round_up = ["pm1.0_atm", "pm2.5_alt", "pm10.0_atm"]
-#             # Round up the values in the specified columns
-#             df[columns_to_round_up] = np.round(df[columns_to_round_up], 3)
-#             # Convert temperature column from Fahrenheit to Celsius
-#             df.loc[df["temperature"] != 0, "temperature"] = (
-#                 (df.loc[df["temperature"] != 0, "temperature"] - 32) * 5 / 9
-#             )
-#             df["temperature"] = np.round(df["temperature"], 1)
-#             # Writing to Postgres Table (Optional)
-#             # df.to_sql('tablename', con=engine, if_exists='append', index=False)
+    start_date = datetime.strptime(bdate, "%Y-%m-%d")
+    end_date = datetime.strptime(edate, "%Y-%m-%d")
+    # total_days = (end_date - start_date).days
 
-#             # writing to csv file
-#             today = datetime(2024, 4, 30).strftime("%Y%m%d")
-#             # folderpathdir = rf"D:\UTS\OneDrive - UTS\HDR\Papers\Dependability\Coding\sensor-reliability\data\{today}\raw"
-#             folderpathdir = rf"data\purpleair_data_csv\purpleair_data_csv"
-#             if not os.path.exists(folderpathdir):
-#                 os.makedirs(folderpathdir)
+    all_data = pd.DataFrame()
+    current_start = start_date
 
-#             filename = folderpathdir + rf"\{s}_20240523-20240525.csv"
-#             # Check if the file already exists
-#             if os.path.exists(filename):
-#                 # Append the DataFrame to the existing CSV file without writing the header
-#                 df.to_csv(filename, mode="a", index=True, header=False)
-#             else:
-#                 # Write the DataFrame to a new CSV file with the header
-#                 df.to_csv(filename, index=True, header=True)
-#     return df
+    while current_start < end_date:
+        current_end = min(current_start + timedelta(days=max_days), end_date)
 
-# Getting PA data
-# fields = retrieve_parameters
-# print(fields)
-# # Data download period. Enter Start and end Dates
-# bdate = "23-05-2024 00:00:00"
-# edate = "25-05-2024 23:59:59"
-# sensor_indexes = [91355, 91721, 92367]
-# sensor_ids = [208466, 208467, 208468]
-# folderlist = get_historicaldata(
-#     sensor_ids, bdate, edate, average_time, fields, key_read
-# )
+        # Example usage of get_historicaldata, replace with actual data fetching
+        # chunk_data = get_sensor_hist_data(
+        #     sensor_index,
+        #     current_start.strftime("%Y-%m-%d"),
+        #     current_end.strftime("%Y-%m-%d"),
+        #     average_time,
+        #     field_list,
+        # )
+        chunk_data = get_member_hist_data(
+            group_id,
+            member_id,
+            current_start.strftime("%Y-%m-%d"),
+            current_end.strftime("%Y-%m-%d"),
+            average_time,
+            field_list,
+        )
+        all_data = pd.concat([all_data, chunk_data])
+
+        current_start = current_end + timedelta(days=1)
+
+    return all_data

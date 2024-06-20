@@ -1,134 +1,119 @@
 {
-    "Armidale": {
-        "AQMS": {
-            "site_name": "ARMIDALE",
-            "site_id": "1350",
-            "data_range": [
-                "2019-04-01",
-                "2024-05-31"
-            ]
-        },
-        "PAS": {
-            "29949": {
-                "sensor_id": "29949",
-                "sensor_name": "DPE Armidale",
-                "data_range": [
-                    "2019-04-01",
-                    "2024-05-31"
-                ]
-            }
-        }
+  "Armidale": {
+    "AQMS": {
+      "site_name": "ARMIDALE",
+      "site_id": "1350",
+      "data_range": ["2019-04-01", "2024-05-31"]
     },
-    "Bathurst": {
-        "AQMS": {
-            "site_name": "BATHURST",
-            "site_id": "795",
-            "data_range": [
-                "2021-02-01",
-                "2024-05-31"
-            ]
-        },
-        "PAS": {
-            "98435": {
-                "sensor_id": "98435",
-                "sensor_name": "DPE PA2 AQMN 34",
-                "data_range": [
-                    "2021-02-01",
-                    "2024-05-31"
-                ]
-            }
-        }
-    },
-    "Lidcombe": {
-        "AQMS": {
-            "site_name": "LIDCOMBE",
-            "site_id": "1141",
-            "data_range": [
-                "2021-03-01",
-                "2023-12-31"
-            ]
-        },
-        "PAS": {
-            "91721": {
-                "sensor_id": "91721",
-                "sensor_name": "DPE Lidcombe 1",
-                "data_range": [
-                    "2021-03-01",
-                    "2023-12-31"
-                ]
-            },
-            "92367": {
-                "sensor_id": "92367",
-                "sensor_name": "DPE Lidcombe 2",
-                "data_range": [
-                    "2021-03-01",
-                    "2023-12-31"
-                ]
-            },
-            "91355": {
-                "sensor_id": "91355",
-                "sensor_name": "DPE Lidcombe 3",
-                "data_range": [
-                    "2021-03-01",
-                    "2023-12-31"
-                ]
-            }
-        }
-    },
-    "Millthorpe": {
-        "AQMS": {
-            "site_name": "MILLTHORPE",
-            "site_id": "798",
-            "data_range": [
-                "2023-07-01",
-                "2024-05-31"
-            ]
-        },
-        "PAS": {
-            "182853": {
-                "sensor_id": "182853",
-                "sensor_name": "DPE PA2 AQMN 34",
-                "data_range": [
-                    "2023-07-01",
-                    "2024-05-31"
-                ]
-            }
-        }
-    },
-    "Wagga_Wagga_North": {
-        "AQMS": {
-            "site_name": "Wagga Wagga North",
-            "site_id": "1650",
-            "data_range": [
-                "2019-04-01",
-                "2024-05-31"
-            ]
-        },
-        "PAS": {
-            "29959": {
-                "sensor_id": "29959",
-                "sensor_name": "DPE Wagga 1",
-                "data_range": [
-                    "2019-04-01",
-                    "2024-05-31"
-                ]
-            },
-            "29945": {
-                "sensor_id": "29945",
-                "sensor_name": "DPE Wagga 2",
-                "data_range": [
-                    "2019-04-01",
-                    "2024-05-31"
-                ]
-            },
-            "30007": {
-                "sensor_id": "30007",
-                "sensor_name": "DPE Wagga 3",
-                "data_range": [
-                    "2019-04-01",
-                    "2024-05-31"
-                ]
-            }
-        }
+    "PAS": {
+      "29949": {
+        "group_id": "2327",
+        "member_id": "208962",
+        "group_name": "Armidale_colocation",
+        "sensor_index": "29949",
+        "sensor_name": "DPE Armidale",
+        "data_range": ["2019-04-01", "2024-05-31"]
+      }
     }
+  },
+  "Bathurst": {
+    "AQMS": {
+      "site_name": "BATHURST",
+      "site_id": "795",
+      "data_range": ["2021-02-01", "2024-05-31"]
+    },
+    "PAS": {
+      "98435": {
+        "group_id": "2328",
+        "member_id": "208963",
+        "group_name": "Bathurst_colocation",
+        "sensor_index": "98435",
+        "sensor_name": "DPE PA2 AQMN 34",
+        "data_range": ["2021-02-01", "2024-05-31"]
+      }
+    }
+  },
+  "Lidcombe": {
+    "AQMS": {
+      "site_name": "LIDCOMBE",
+      "site_id": "1141",
+      "data_range": ["2021-03-01", "2023-12-31"]
+    },
+    "PAS": {
+      "91721": {
+        "group_id": "2308",
+        "member_id": "208467",
+        "group_name": "Lidcombe",
+        "sensor_index": "91721",
+        "sensor_name": "DPE Lidcombe 1",
+        "data_range": ["2021-03-01", "2023-12-31"]
+      },
+      "92367": {
+        "group_id": "2308",
+        "member_id": "208468",
+        "group_name": "Lidcombe",
+        "sensor_index": "92367",
+        "sensor_name": "DPE Lidcombe 2",
+        "data_range": ["2021-03-01", "2023-12-31"]
+      },
+      "91355": {
+        "group_id": "2308",
+        "member_id": "208466",
+        "group_name": "Lidcombe",
+        "sensor_index": "91355",
+        "sensor_name": "DPE Lidcombe 3",
+        "data_range": ["2021-03-01", "2023-12-31"]
+      }
+    }
+  },
+  "Millthorpe": {
+    "AQMS": {
+      "site_name": "MILLTHORPE",
+      "site_id": "798",
+      "data_range": ["2023-07-01", "2024-05-31"]
+    },
+    "PAS": {
+      "182853": {
+        "group_id": "2329",
+        "member_id": "208964",
+        "group_name": "Bathurst_colocation",
+        "sensor_index": "182853",
+        "sensor_name": "NSW DPE CA 36",
+        "data_range": ["2023-07-01", "2024-05-31"]
+      }
+    }
+  },
+  "Wagga_Wagga_North": {
+    "AQMS": {
+      "site_name": "Wagga Wagga North",
+      "site_id": "1650",
+      "data_range": ["2019-04-01", "2024-05-31"]
+    },
+    "PAS": {
+      "29959": {
+        "group_id": "2330",
+        "member_id": "208965",
+        "group_name": "Wagga_Wagga_North_colocation",
+        "sensor_index": "29959",
+        "sensor_name": "DPE Wagga 1",
+        "data_range": ["2019-04-01", "2024-05-31"]
+      },
+      "29945": {
+        "group_id": "2330",
+        "member_id": "208966",
+        "group_name": "Wagga_Wagga_North_colocation",
+        "sensor_index": "29945",
+        "sensor_name": "DPE Wagga 2",
+        "data_range": ["2019-04-01", "2024-05-31"]
+      },
+      "30007": {
+        "group_id": "2330",
+        "member_id": "208967",
+        "group_name": "Wagga_Wagga_North_colocation",
+        "sensor_index": "30007",
+        "sensor_name": "DPE Wagga 3",
+        "data_range": ["2019-04-01", "2024-05-31"]
+      }
+    }
+  }
 }
