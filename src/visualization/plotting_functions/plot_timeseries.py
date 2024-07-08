@@ -15,6 +15,7 @@ def plot_time_series(
     colors=None,
     linestyles=None,
     linewidths=None,
+    xtick_rot=0,
     alpha=1.0,
     save_dir=None,
     figsize=(12, 6),
@@ -97,7 +98,7 @@ def plot_time_series(
     ax.grid(True)
 
     # Rotate x-axis labels for better readability
-    plt.setp(ax.get_xticklabels(), rotation=90, ha="right")
+    plt.setp(ax.get_xticklabels(), rotation=xtick_rot, ha="center")
 
     # Save the figure
     if save_dir:
